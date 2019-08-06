@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="nl" xmlns:th="http://wwww.thymeleaf.org">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <link rel="icon" type="image/x-icon" th:href="@{/img/icon.png}">
+  <title>Indox - Health, Beauty & Electronics</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <!-- Custom fonts for this template -->
+  <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+  <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet" type="text/css">
+  <link href='https://fonts.googleapis.com/css?family=Kaushan+Script' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Droid+Serif:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+  <link href='https://fonts.googleapis.com/css?family=Roboto+Slab:400,100,300,700' rel='stylesheet' type='text/css'>
+</head>
+
+<body id="page-top">
+
+    <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand js-scroll-trigger" href="#page-top"><img src="img/Indoxlogo-small.png" width="50%" height="auto"></a>
+    <div class="container">
+      
+      <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        Menu
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav text-uppercase ml-auto">
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#services">Service</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#webshop">Webshop</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#about">Over Ons</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link js-scroll-trigger" href="#contact">Contact</a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- end NAV -->
+    
+    <!-- Header -->
+    <header class="masthead">
+      <div id="header-section">
+        <img th:src="@{img/header-bg-prod.jpg}" alt="bg" style="width:100%;">
+        <div class="carousel-caption d-none d-md-block text-light" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">        
+            <h2 class="text-light">Welkom Bij Indox Webshop!</h2></br>
+            <h3 class="text-light">Producten die op dit moment beschiekbaar zijn voor particulieren</h3>
+            <a class="btn btn-primary btn-xl text-uppercase js-scroll-trigger" href="#services">Ontdek Meer</a>
+        </div>
+      </div>
+    </header>
+  </br></br>
+   
+    <!-- Services -->
+    <form action="#" th:action="@{/addProductsToOrder}" th:object="${order}" method="post">
+  	<div class="pb-5" th:field="*{orderDetails}">
+	    <div class="container">
+	      <div class="row">
+	        <div class="col-lg-12 p-5 bg-white rounded shadow-sm mb-5">
+	
+	          <!-- Shopping cart table -->
+	          <div class="table-responsive">
+	            <table class="table">
+	              <thead>
+	                <tr>
+	                  <th scope="col" class="border-0 bg-light">
+	                    <div class="p-2 px-3 text-uppercase">Product</div>
+	                  </th>
+	                  <th scope="col" class="border-0 bg-light">
+	                    <div class="py-2 text-uppercase">Price</div>
+	                  </th>
+	                  <th scope="col" class="border-0 bg-light">
+	                    <div class="py-2 text-uppercase">Quantity</div>
+	                  </th>
+	                  <th scope="col" class="border-0 bg-light">
+	                    <div class="py-2 text-uppercase">Remove</div>
+	                  </th>
+	                </tr>
+	              </thead>
+	              <tbody id="tableBody">
+	                <tr th:id="'orderItem'+${orderDetail.getProduct().getProductId()}"  th:each="orderDetail : *{orderDetails}">
+	                  <th scope="row" class="border-0">
+	                    <div class="p-2">
+	                      <img th:src="${orderDetail.getProduct().getProductImages().get(0).getImageUri()}" alt="" width="70" class="img-fluid rounded shadow-sm">
+	                      <div class="ml-3 d-inline-block align-middle" id="productName">
+                            <h5 class="mb-0"> <a href="#" class="text-dark d-inline-block align-middle" th:text="${orderDetail.getProduct().getProductName()}"></a></h5>
+                            <span class="text-muted font-weight-normal font-italic d-block">product category</span>
+	                      </div>
+	                    </div>
+	                  </th>
+	                  <td id="productPrice" class="border-0 align-middle" th:text="' &euro; '+${#numbers.formatDecimal(orderDetail.getProduct().getProductPrice(), 0, 'COMMA', 2, 'POINT')}"><strong>price</strong></td>               
+	                  <td id="quantity" class="border-0 align-middle" name="quantity" th:text="${orderDetail.getQuantity()}"><strong></strong></td>
+                    <td id="deleteOrderItem" class="border-0 align-middle"><a class="text-dark" th:href="@{/delorderitem(prodId=${orderDetail.getProduct().getProductId()})}"><i class="fa fa-trash"></i></a></td>
+                    
+	                </tr>
+	              </tbody>
+	            </table>
+	          </div>
+	          <!-- End -->
+	        </div>
+	      </div>
+	
+	      <div class="row py-5 p-4 bg-white rounded shadow-sm">
+	        <div class="col-lg-6">
+	          <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Coupon code</div>
+	          <div class="p-4">
+	            <p class="font-italic mb-4">If you have a coupon code, please enter it in the box below</p>
+	            <div class="input-group mb-4 border rounded-pill p-2">
+	              <input type="text" placeholder="Apply coupon" aria-describedby="button-addon3" class="form-control border-0">
+	              <div class="input-group-append border-0">
+	                <button id="button-addon3" type="button" class="btn btn-dark px-4 rounded-pill"><i class="fa fa-gift mr-2"></i>Apply coupon</button>
+	              </div>
+	            </div>
+	          </div>
+	          <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Instructions for seller</div>
+	          <div class="p-4">
+	            <p class="font-italic mb-4">If you have some information for the seller you can leave them in the box below</p>
+	            <textarea name="" cols="30" rows="2" class="form-control"></textarea>
+	          </div>
+	        </div>
+	        <div class="col-lg-6">
+	          <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Order summary </div>
+	          <div class="p-4">
+	            <p class="font-italic mb-4">Shipping and additional costs are calculated based on values you have entered.</p>
+	            <ul class="list-unstyled mb-4">
+	              <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Order Subtotal </strong><strong id="orderSubtotal">$390.00</strong></li>
+	              <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Shipping and handling</strong><strong id="shippingCost">€ 10.00</strong></li>
+	              <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted">Tax</strong><strong >€ 0.00</strong></li>
+	              <li class="d-flex justify-content-between py-3 border-bottom"><strong class="text-muted" >Total</strong>
+	                <h5 id="orderTotal" class="font-weight-bold">$400.00</h5>
+	              </li>
+	            </ul>
+	            <!-- <button type="submit" class="btn btn-dark rounded-pill py-2 btn-block">Bestellen</a> -->
+	            <button class="btn btn-dark rounded-pill py-2 btn-block" type="button" data-toggle="collapse" data-target="#personalInfo" aria-expanded="true" aria-controls="collapseOne">Naar Verzendingsgegevens</button>
+	          </div>
+	        </div>
+	      </div>
+	
+	    </div>
+	  </div>
+	  <div class="accordion" id="accordionSection">
+           <div class="container"> 
+               <div class="card">
+                   <div class="card-header" id="headingOne">
+                     <h2 class="mb-0"></h2>
+                       <a  href="#" data-toggle="collapse" data-target="#personalInfo" aria-expanded="true" aria-controls="collapseOne">
+                         <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Verzendingsgegevens </div>
+                       </a>
+                     
+                   </div>
+   
+                   <div id="personalInfo" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSection">
+                       <div >
+                           <div class="card-body">
+                               </br>
+							      <div class="row">
+							
+							        <div class="col-md-12 border" th:field="*{customer}">
+							            <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Uw PersoonlijkGegevens </div>
+							                </br>
+							                <div class="form-row">  
+							                    <div class="form-group col-md-2">
+							                        <label for="inputAddress">Aanhef</label>
+							                        <select class="form-control" th:field="*{customer.salutation}">
+							                            <option value="Heer/Mevrouw">Heer/Mevrouw</option>
+							                            <option value="Heer">Heer</option>
+							                            <option value="Mevrouw">Mevrouw</option>
+							                        </select>
+							                    </div>
+							                    
+							                        <div class="form-group col-md-4">
+							                            <label for="inputName">Naam</label>
+							                            <input type="text" class="form-control" id="inputName" placeholder="Voornaam" required th:field="*{customer.firstName}">
+							                        </div>
+							                        <div class="form-group col-md-6">
+							                            <label for="inputLastName">Achternaam</label>
+							                            <input type="text" class="form-control" id="inputLastName" placeholder="Achternaam" required th:field="*{customer.lastName}">
+							                        </div>
+							                   
+							                </div>
+							            <div class="form-row">
+							                <div class="form-group col-md-6">
+							                    <label for="inputEmail">Email</label>
+							                    <input type="email" class="form-control" id="inputEmail" placeholder="Email" th:field="*{customer.email}">
+							                </div>
+							                <div class="form-group col-md-6">
+							                    <label for="inputMobile">Telefoonnummer</label>
+							                    <input type="text" class="form-control" id="inputMobile" placeholder="06" th:field="*{customer.phoneNumber}">
+							                </div>
+							            </div>
+							            <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Uw Adres</div>
+							            <div class="form-row">
+							                <div class="form-group col-md-4">
+							                    <label for="inputStreet">Straat</label>
+							                    <input type="text" class="form-control" id="inputStreet" placeholder="Straat">
+							                </div>
+							                
+							                <div class="form-group col-md-4">
+							                    <label for="inputHouseNo">Huis Nummer</label>
+							                    <input type="text" class="form-control" id="inputHouseNo" placeholder="Huis nr.">
+							                </div>
+							                <div class="form-group col-md-4">
+							                    <label for="inputHouseNoToe">Toevoeging</label>
+							                    <input type="text" class="form-control" id="inputHouseNoToe" placeholder="bijv. a">
+							                </div> 
+							            </div>
+							            <div class="form-row">
+							                <div class="form-group col-md-4">
+							                    <label for="inputPostCode">Postcode</label>
+							                    <input type="text" class="form-control" id="inputPostCode" placeholder="Postcode" th:field="*{customer.postcode}">
+							                </div>
+							                <div class="form-group col-md-4">
+							                    <label for="inputCity">Plaats</label>
+							                    <input type="text" class="form-control" id="inputEmail" placeholder="Plaats" th:field="*{customer.city}">
+							                </div>
+							                <div class="form-group col-md-4">
+							                    <label for="inputMobile">Land</label>
+							                    <input type="text" class="form-control" id="inputMobile" placeholder="Nederland" readonly>
+							                </div>
+							            </div>
+							        
+								</div>
+							    </div>
+                           </div>
+                       </div>  
+                   </div>
+               </div>
+           </div>
+       </div>
+       
+       <div class="accordion" id="accordionSection2">
+           <div class="container"> 
+               <div class="card">
+                   <div class="card-header" id="headingOne">
+                     <h2 class="mb-0"></h2>
+                       <a  href="#" data-toggle="collapse" data-target="#bankInfo" aria-expanded="true" aria-controls="collapseOne">
+                         <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Betalingsgegevens </div>
+                       </a>
+                     
+                   </div>
+   
+                   <div id="bankInfo" class="collapse" aria-labelledby="headingOne" data-parent="#accordionSection2">
+                       <div >
+                           <div class="card-body">
+                               </br>
+							      <div class="row">
+							
+							        <div class="col-md-12 border" th:field="*{customer}">
+							            <div class="bg-light rounded-pill px-4 py-3 text-uppercase font-weight-bold">Selecteer uw Bank</div>
+							                </br>
+							                <div class="form-row">  
+							                    <div class="form-group col-md-2">
+							                        <label for="inputAddress">Aanhef</label>
+							                        <select class="form-control" th:field="*{customer.salutation}">
+							                            <option value="Heer/Mevrouw">Heer/Mevrouw</option>
+							                            <option value="Heer">Heer</option>
+							                            <option value="Mevrouw">Mevrouw</option>
+							                        </select>
+							                    </div>
+							                    
+							                        <div class="form-group col-md-4">
+							                            <label for="inputName">Naam</label>
+							                            <input type="text" class="form-control" id="inputName" placeholder="Voornaam" required th:field="*{customer.firstName}">
+							                        </div>
+							                        <div class="form-group col-md-6">
+							                            <label for="inputLastName">Achternaam</label>
+							                            <input type="text" class="form-control" id="inputLastName" placeholder="Achternaam" required th:field="*{customer.lastName}">
+							                        </div>
+							                   
+							                </div>
+							            
+                           </div>
+                       </div>  
+                   </div>
+               </div>
+           </div>
+       </div>
+       
+       
+	  </form>
+	  
+	   
+
+	
+    
+</br>
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="row align-items-center">
+          <div class="col-md-4">
+            <span class="copyright">Copyright &copy; Indox.nl 2019</span>
+          </div>
+          <div class="col-md-4">
+            <ul class="list-inline social-buttons">
+              <li class="list-inline-item">
+                <a href="#">
+                  <i class="fab fa-twitter"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#">
+                  <i class="fab fa-linkedin-in"></i>
+                </a>
+              </li>
+            </ul>
+          </div>
+          <div class="col-md-4">
+            <ul class="list-inline quicklinks">
+              <li class="list-inline-item">
+                <a href="#">Privacy Policy</a>
+              </li>
+              <li class="list-inline-item">
+                <a href="#">Terms of Use</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </footer>
+<!--Bootstrap------------------------------------------------------------------------->
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+<script> $(document).ready(function() {
+			calculateSubTotal();
+			
+			$("td[id*='deleteOrderItem']").click(function(){
+				$(this).parent().remove();
+				calculateSubTotal();
+				calculateTotal();
+			});
+			
+			
+    	});
+    	function calculateSubTotal(){
+    		var subTotal=0;
+    		$("tr").each(function(){
+				var str = $(this).find("#productPrice").text();
+				str = Number(str.substring(2,str.length))*Number($(this).find("#quantity").text());
+				subTotal = subTotal+ Number(str);
+			});
+    		$("#orderSubtotal").text("€ " + subTotal.toFixed(2)).html();
+    		calculateTotal();
+    	}
+    	function calculateTotal(){
+    		var orderSubtotal = $("#orderSubtotal").text();
+    		console.log("orderSubtotal "+ orderSubtotal);
+    		var shippingCost = $("#shippingCost").text();
+    		console.log("orderSubtotal "+ shippingCost);
+    		var total = Number(orderSubtotal.substring(2,orderSubtotal.length))+Number(shippingCost.substring(2,shippingCost.length));
+    		console.log("orderSubtotal "+ total);
+    		$("#orderTotal").text("€ " + total.toFixed(2)).html();
+    	
+    		
+    	}
+</script>
+</body>
+
+</html>
